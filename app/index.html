@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conheça Atena: Sua Nova Tutora 24 Horas!</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap');
+        
+        :root {
+            --azul: #0451b8;
+            --laranja: #f47500;
+            --verde: #098419;
+            --dark: #0a0a0a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+               min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+                        url('./assets/background.jpg') center/cover no-repeat;
+            color: var(--accent);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Background animado */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, var(--azul)22 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, var(--laranja)22 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, var(--verde)22 0%, transparent 50%);
+            animation: bgMove 10s ease-in-out infinite alternate;
+            z-index: -1;
+        }
+
+        @keyframes bgMove {
+            0% { transform: translateX(-10px) translateY(-10px); }
+            100% { transform: translateX(10px) translateY(10px); }
+        }
+
+        /* Partículas flutuantes */
+        .particles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--azul);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+            box-shadow: 0 0 10px var(--azul);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0; }
+            50% { transform: translateY(-100px) rotate(180deg); opacity: 1; }
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-bottom: 2px solid var(--azul);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: center;
+            animation: slideDown 1s ease-out;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        header img {
+            max-width: 150px;
+            height: auto;
+            filter: drop-shadow(0 0 10px rgba(4, 81, 184, 0.5));
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 10px rgba(4, 81, 184, 0.5)); }
+            to { filter: drop-shadow(0 0 20px rgba(4, 81, 184, 0.8)); }
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 4rem 2rem;
+            gap: 2rem;
+            min-height: calc(100vh - 100px);
+        }
+
+        h1 {
+            font-size: clamp(2rem, 8vw, 4rem);
+            font-weight: 800;
+            background: linear-gradient(45deg, var(--azul), var(--laranja), var(--verde));
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientMove 3s ease-in-out infinite, textPulse 2s ease-in-out infinite;
+            text-shadow: 0 0 30px rgba(4, 81, 184, 0.5);
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes textPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        h2 {
+            font-size: clamp(1.2rem, 4vw, 1.8rem);
+            font-weight: 300;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.9);
+            animation: fadeInUp 1s ease-out 0.5s both;
+            max-width: 600px;
+        }
+
+        @keyframes fadeInUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .author-container {
+            position: relative;
+            animation: fadeInUp 1s ease-out 1s both;
+        }
+
+        #author {
+            max-width: min(250px, 90%);
+            height: auto;
+            border-radius: 20px;
+            border: 3px solid var(--verde);
+            box-shadow: 
+                0 0 30px rgba(9, 132, 25, 0.6),
+                0 0 60px rgba(4, 81, 184, 0.3);
+            transition: all 0.3s ease;
+            animation: authorFloat 4s ease-in-out infinite;
+        }
+
+        @keyframes authorFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(1deg); }
+        }
+
+        #author:hover {
+            transform: scale(1.1) rotate(-2deg);
+            box-shadow: 
+                0 0 40px rgba(9, 132, 25, 0.8),
+                0 0 80px rgba(4, 81, 184, 0.5);
+        }
+
+        .cta-button {
+            background: linear-gradient(45deg, var(--azul), var(--laranja));
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            color: white;
+            font-weight: 700;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: fadeInUp 1s ease-out 1.5s both, buttonPulse 3s ease-in-out infinite;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        @keyframes buttonPulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(4, 81, 184, 0.5); }
+            50% { box-shadow: 0 0 40px rgba(4, 81, 184, 0.8), 0 0 60px rgba(244, 117, 0, 0.6); }
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            background: linear-gradient(45deg, var(--laranja), var(--azul));
+            box-shadow: 0 10px 30px rgba(4, 81, 184, 0.6);
+        }
+
+        footer {
+            background: rgba(4, 81, 184, 0.1);
+            backdrop-filter: blur(20px);
+            border-top: 2px solid var(--azul);
+            padding: 2rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid var(--azul);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            animation: iconFloat 3s ease-in-out infinite;
+        }
+
+        .social-icon:nth-child(2) { animation-delay: 0.5s; }
+        .social-icon:nth-child(3) { animation-delay: 1s; }
+
+        @keyframes iconFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .social-icon:hover {
+            background: var(--azul);
+            color: white;
+            transform: scale(1.2) rotate(15deg);
+            box-shadow: 0 0 20px var(--azul);
+        }
+
+        /* Efeito de digitação x
+        .typing-effect {
+            border-right: 3px solid var(--laranja);
+            animation: typing 4s steps(40) infinite, blink 1s infinite;
+        }*/
+
+        @keyframes blink {
+            0%, 50% { border-color: var(--laranja); }
+            51%, 100% { border-color: transparent; }
+        }
+
+        @media (max-width: 768px) {
+            header { padding: 0.8rem 1rem; }
+            header img { max-width: 100px; }
+            main { padding: 2rem 1rem; }
+            .cta-button { padding: 12px 24px; font-size: 1rem; }
+        }
+
+        /* Loader inicial */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            animation: fadeOut 0.5s ease-out 2s forwards;
+        }
+
+        .loader-text {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--azul);
+            animation: pulse 1s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); }
+        }
+
+        @keyframes fadeOut {
+            to { opacity: 0; visibility: hidden; }
+        }
+    </style>
+</head>
+<body>
+    <div class="loader">
+        <div class="loader-text">ATENA</div>
+    </div>
+
+    <div class="particles"></div>
+
+    <header>
+        <img src="./assets/logo.png" alt="Logo Uniatenas">
+    </header>
+
+    <main>
+        <h1>Conheça Atena</h1>
+        <h2 class="typing-effect">Sua Nova Tutora 24 Horas! Educação do futuro, hoje.</h2>
+        
+        <div class="author-container">
+            <img src="././assets/atena.jpg" alt="Tutora Atena" id="author">
+        </div>
+
+      <button class="cta-button" id="chatButton">
+    Conversar Agora
+</button>
+
+<script>
+const chatButton = document.getElementById('chatButton');
+
+chatButton.addEventListener('click', () => {
+    let iframe = document.getElementById('chatbotIframe');
+
+    if (!iframe) {
+        iframe = document.createElement('iframe');
+        iframe.src = 'https://admin.toolzz.ai/embed/93e14a39-37e0-47fb-8e7d-18240b71de19';
+        iframe.id = 'chatbotIframe';
+
+       // iframe.allow = "microphone";
+
+
+        // Estilo padrão (desktop maior)
+        iframe.style.position = 'fixed';
+        iframe.style.bottom = '20px';
+        iframe.style.right = '20px';
+        iframe.style.width = '600px';   // aumentei de 400px para 600px
+        iframe.style.height = '800px';  // aumentei de 600px para 800px
+        iframe.style.border = 'none';
+        iframe.style.borderRadius = '10px';
+        iframe.style.boxShadow = '0 4px 15px rgba(0,0,0,0.3)';
+        iframe.style.zIndex = '9999';
+        iframe.style.display = 'block';
+
+        document.body.appendChild(iframe);
+
+        // Ajuste responsivo para mobile
+        const resizeChat = () => {
+            if (window.innerWidth <= 480) { // telas pequenas
+                iframe.style.width = '90%';
+                iframe.style.height = '70%';
+                iframe.style.bottom = '10px';
+                iframe.style.right = '5%';
+                iframe.style.borderRadius = '5px';
+            } else { // volta ao padrão desktop maior
+                iframe.style.width = '600px';
+                iframe.style.height = '800px';
+                iframe.style.bottom = '20px';
+                iframe.style.right = '20px';
+                iframe.style.borderRadius = '10px';
+            }
+        };
+
+        // Executa ao abrir e quando redimensionar
+        resizeChat();
+        window.addEventListener('resize', resizeChat);
+
+    } else {
+        // alterna visibilidade
+        iframe.style.display = iframe.style.display === 'none' ? 'block' : 'none';
+    }
+});
+</script>
+
+
+    </main>
+
+
+    
+   <footer>
+        <div class="footer-content">
+            <span>© 2025 Faculdade Atenas. Transformando a educação com tecnologia.</span>
+            <div class="social-icons">
+                <a href="https://wa.me/5536723737" target="_blank" class="social-icon whatsapp-icon" title="WhatsApp">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.485 3.287"/>
+                    </svg>
+                </a>
+                <a href="https://uniatenas.apprbs.com.br/iniciar-inscricao" target="_blank" class="social-icon vestibular-icon" title="Vestibular 2025">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12,3L1,9L12,15L21,9V10H23V9M5,13.18V17.18L12,21L19,17.18V13.18L12,17L5,13.18Z"/>
+                    </svg>
+                </a>
+                <a href="https://www.instagram.com/colegioatenasoficial?utm_source=ig_web_button_share_sheet&igsh=bHUxdmRlOWtrcTBn" target="_blank" class="social-icon instagram-icon" title="Instagram">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M7.8,2H16.2C19.4,2 22,4.6 22,7.8V16.2A5.8,5.8 0 0,1 16.2,22H7.8C4.6,22 2,19.4 2,16.2V7.8A5.8,5.8 0 0,1 7.8,2M7.6,4A3.6,3.6 0 0,0 4,7.6V16.4C4,18.39 5.61,20 7.6,20H16.4A3.6,3.6 0 0,0 20,16.4V7.6C20,5.61 18.39,4 16.4,4H7.6M17.25,5.5A1.25,1.25 0 0,1 18.5,6.75A1.25,1.25 0 0,1 17.25,8A1.25,1.25 0 0,1 16,6.75A1.25,1.25 0 0,1 17.25,5.5M12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9Z"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <style>
+        footer {
+            background: rgba(4, 81, 184, 0.1);
+            backdrop-filter: blur(20px);
+            border-top: 2px solid var(--azul);
+            padding: 2rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+        }
+
+        .social-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid var(--azul);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            animation: iconFloat 3s ease-in-out infinite;
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.8);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-icon::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .social-icon:hover::before {
+            left: 100%;
+        }
+
+        .social-icon:nth-child(2) { animation-delay: 0.5s; }
+        .social-icon:nth-child(3) { animation-delay: 1s; }
+
+        @keyframes iconFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .whatsapp-icon:hover {
+            background: linear-gradient(45deg, #25D366, #128C7E);
+            border-color: #25D366;
+            color: white;
+            transform: scale(1.2) rotate(15deg);
+            box-shadow: 0 0 25px rgba(37, 211, 102, 0.6);
+        }
+
+        .vestibular-icon:hover {
+            background: linear-gradient(45deg, var(--laranja), #ff6b35);
+            border-color: var(--laranja);
+            color: white;
+            transform: scale(1.2) rotate(-15deg);
+            box-shadow: 0 0 25px rgba(244, 117, 0, 0.6);
+        }
+
+        .instagram-icon:hover {
+            background: linear-gradient(45deg, #E4405F, #C13584, #833AB4);
+            border-color: #E4405F;
+            color: white;
+            transform: scale(1.2) rotate(15deg);
+            box-shadow: 0 0 25px rgba(228, 64, 95, 0.6);
+        }
+
+        .social-icon svg {
+            transition: transform 0.3s ease;
+        }
+
+        .social-icon:hover svg {
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 768px) {
+            .social-icons {
+                gap: 1rem;
+            }
+            
+            .social-icon {
+                width: 45px;
+                height: 45px;
+            }
+            
+            .social-icon svg {
+                width: 18px;
+                height: 18px;
+            }
+        }
+    </style>
+
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var iframe = document.getElementById('chatbotIframe');
+    var chatButton = document.getElementById('chatButton');
+    var isMaximized = false;
+
+    // Clique no botão abre o chat
+    chatButton.addEventListener('click', function () {
+      iframe.style.width = '420px';
+      iframe.style.height = '800px';
+    });
+
+    function handleMessage(event) {
+        if (event.data === 'openChatbot') {
+          iframe.style.width = isMaximized ? '500px' : '420px';
+          iframe.style.height = '800px';
+        } else if (event.data === 'closeChatbot') {
+          iframe.style.width = '100px';
+          iframe.style.height = '100px';
+        } else if (event.data === 'maximizeChatbot') {
+          isMaximized = true;
+          iframe.style.width = '500px';
+        } else if (event.data === 'minimizeChatbot') {
+          isMaximized = false;
+          iframe.style.width = '420px';
+        }
+    }
+
+    window.addEventListener('message', handleMessage);
+
+    function cleanup() {
+      window.removeEventListener('message', handleMessage);
+    }
+  });
+</script>
+
+    <script>
+        // Criar partículas animadas
+        function createParticles() {
+            const particles = document.querySelector('.particles');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                particles.appendChild(particle);
+            }
+        }
+
+        // Paralax no mouse
+        document.addEventListener('mousemove', (e) => {
+            const mouseX = e.clientX / window.innerWidth;
+            const mouseY = e.clientY / window.innerHeight;
+            
+            document.querySelector('#author').style.transform = 
+                `translateX(${mouseX * 20 - 10}px) translateY(${mouseY * 20 - 10}px)`;
+        });
+
+        // Inicializar
+        window.addEventListener('load', () => {
+            createParticles();
+        });
+    </script>
+</body>
+</html>
