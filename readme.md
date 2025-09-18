@@ -1,3 +1,6 @@
+## Tecnologias
+-[] html, css, js
+
 VERSÃO DO CHAT  MAIOR UM POUCO
 
 
