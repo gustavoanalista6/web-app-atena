@@ -1,5 +1,5 @@
-## Tecnologias
--[] html, css, js
+## Landing Page
+-[ ] html, css, js
 
 VERSÃO DO CHAT  MAIOR UM POUCO
 
