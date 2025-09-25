@@ -1,0 +1,226 @@
+# ================================================
+# .htaccess - Configuração Padrão para Produção
+# Testado em Apache 2.4+
+# ================================================
+
+# ----------------------------------------
+# 1. CONFIGURAÇÕES BÁSICAS
+# ----------------------------------------
+
+# Força UTF-8 para arquivos de texto
+AddDefaultCharset UTF-8
+
+# Define index.html como página padrão
+DirectoryIndex index.html index.htm
+
+# Desabilita listagem de diretórios
+Options -Indexes
+
+# Segue links simbólicos (necessário para alguns hostings)
+Options +FollowSymLinks
+
+# ----------------------------------------
+# 2. REDIRECIONAMENTOS E REWRITES
+# ----------------------------------------
+
+RewriteEngine On
+
+# Remove trailing slash de URLs (exceto diretórios)
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} (.+)/$
+RewriteRule ^ %1 [R=301,L]
+
+# Força HTTPS (descomente se necessário)
+# RewriteCond %{HTTPS} off
+# RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Remove extensão .html das URLs
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^([^\.]+)$ $1.html [NC,L]
+
+# Redireciona .html para URL limpa
+RewriteCond %{THE_REQUEST} /([^.]+)\.html [NC]
+RewriteRule ^ /%1? [NC,L,R=301]
+
+# ----------------------------------------
+# 3. HEADERS DE SEGURANÇA
+# ----------------------------------------
+
+<IfModule mod_headers.c>
+    # Previne clickjacking
+    Header always set X-Frame-Options "SAMEORIGIN"
+    
+    # Previne MIME sniffing
+    Header always set X-Content-Type-Options "nosniff"
+    
+    # Habilita XSS protection
+    Header always set X-XSS-Protection "1; mode=block"
+    
+    # Força HTTPS por 1 ano (descomente se necessário)
+    # Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+    
+    # Política de referrer
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    
+    # Content Security Policy básica
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' https:; connect-src 'self' https:;"
+    
+    # Remove headers que revelam informações do servidor
+    Header always unset X-Powered-By
+    Header always unset Server
+</IfModule>
+
+# ----------------------------------------
+# 4. COMPRESSÃO GZIP
+# ----------------------------------------
+
+<IfModule mod_deflate.c>
+    # Comprime arquivos de texto
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/xml
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE text/javascript
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE application/xhtml+xml
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/x-javascript
+    AddOutputFilterByType DEFLATE application/json
+    AddOutputFilterByType DEFLATE application/ld+json
+    AddOutputFilterByType DEFLATE image/svg+xml
+    
+    # Remove problemas de proxy
+    Header append Vary User-Agent env=!dont-vary
+</IfModule>
+
+# ----------------------------------------
+# 5. CONFIGURAÇÕES DE CACHE
+# ----------------------------------------
+
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresDefault "access plus 1 week"
+    
+    # Cache de arquivos estáticos
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType application/x-javascript "access plus 1 month"
+    ExpiresByType text/javascript "access plus 1 month"
+    
+    # Cache de imagens
+    ExpiresByType image/gif "access plus 6 months"
+    ExpiresByType image/jpg "access plus 6 months"
+    ExpiresByType image/jpeg "access plus 6 months"
+    ExpiresByType image/png "access plus 6 months"
+    ExpiresByType image/svg+xml "access plus 6 months"
+    ExpiresByType image/webp "access plus 6 months"
+    ExpiresByType image/avif "access plus 6 months"
+    
+    # Cache de fontes
+    ExpiresByType font/woff "access plus 1 year"
+    ExpiresByType font/woff2 "access plus 1 year"
+    ExpiresByType application/font-woff "access plus 1 year"
+    ExpiresByType application/font-woff2 "access plus 1 year"
+    
+    # HTML com cache menor para atualizações frequentes
+    ExpiresByType text/html "access plus 1 day"
+    
+    # Manifests e service workers
+    ExpiresByType application/manifest+json "access plus 1 day"
+    ExpiresByType text/cache-manifest "access plus 0 seconds"
+</IfModule>
+
+# Cache alternativo usando mod_headers
+<IfModule mod_headers.c>
+    # Remove ETags (conflitam com cache expires)
+    Header unset ETag
+    FileETag None
+    
+    # Cache para arquivos estáticos
+    <FilesMatch "\.(css|js|png|jpg|jpeg|gif|svg|webp|avif|woff|woff2|ttf|otf|ico)$">
+        Header set Cache-Control "max-age=2592000, public"
+    </FilesMatch>
+    
+    # Cache menor para HTML
+    <FilesMatch "\.(html|htm)$">
+        Header set Cache-Control "max-age=86400, public, must-revalidate"
+    </FilesMatch>
+</IfModule>
+
+# ----------------------------------------
+# 6. PROTEÇÕES E BLOQUEIOS
+# ----------------------------------------
+
+# Bloqueia acesso a arquivos sensíveis
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
+
+# Protege arquivos de configuração
+<FilesMatch "\.(htaccess|htpasswd|ini|log|sh|inc|bak|backup|config)$">
+    Require all denied
+</FilesMatch>
+
+# Bloqueia user agents maliciosos
+RewriteCond %{HTTP_USER_AGENT} (libwww-perl|wget|python|nikto|curl|scan|java|winhttp|clshttp|loader) [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} (%0A|%0D|%27|%3C|%3E|%00) [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} (;|<|>|'|"|\)|\(|%0A|%0D|%22|%27|%28|%3C|%3E|%00).*(libwww-perl|wget|python|nikto|curl|scan|java|winhttp|HTTrack|clshttp|archiver|loader|email|harvest|extract|grab|miner) [NC]
+RewriteRule .* - [F,L]
+
+# ----------------------------------------
+# 7. MIME TYPES ADICIONAIS
+# ----------------------------------------
+
+<IfModule mod_mime.c>
+    # Tipos modernos
+    AddType application/javascript .js
+    AddType text/css .css
+    AddType application/json .json
+    AddType application/ld+json .jsonld
+    AddType application/manifest+json .webmanifest
+    
+    # Fontes
+    AddType font/woff .woff
+    AddType font/woff2 .woff2
+    AddType application/vnd.ms-fontobject .eot
+    AddType font/ttf .ttf
+    AddType font/otf .otf
+    
+    # Imagens modernas
+    AddType image/webp .webp
+    AddType image/avif .avif
+    AddType image/svg+xml .svg
+    
+    # Outros
+    AddType application/xml .xml
+    AddType text/x-component .htc
+</IfModule>
+
+# ----------------------------------------
+# 8. CONFIGURAÇÕES DE PERFORMANCE
+# ----------------------------------------
+
+# Desabilita ETags desnecessários
+FileETag None
+
+# Configurações de conexão keep-alive
+<IfModule mod_headers.c>
+    Header set Connection keep-alive
+</IfModule>
+
+# ----------------------------------------
+# 9. PÁGINAS DE ERRO CUSTOMIZADAS
+# ----------------------------------------
+
+ErrorDocument 404 /404.html
+ErrorDocument 403 /403.html
+ErrorDocument 500 /500.html
+
+# ----------------------------------------
+# 10. CONFIGURAÇÕES ESPECÍFICAS DO PROJETO
+# ----------------------------------------
+
+# Adicione suas configurações específicas aqui
+# Exemplo: redirecionamentos personalizados, proxies, etc.

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Atena</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --azul: #0451b8;
+      --laranja: #f47500;
+      --verde: #098419;
+    }
+
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
+                  url('./assets/background.jpg') center/cover no-repeat;
+      color: #fff;
+    }
+
+    .login-container {
+      background: white;
+      backdrop-filter: blur(15px);
+      border-radius: 20px;
+      padding: 2rem;
+      width: 100%; max-width: 380px;
+      text-align: center;
+         border: 3px solid var(--verde);
+    box-shadow: 
+                0 0 30px rgba(9, 132, 25, 0.6),
+                0 0 60px rgba(4, 81, 184, 0.3);
+    }
+
+    h1 {
+      font-size: 2rem; margin-bottom: 1rem;
+      background: linear-gradient(45deg, var(--azul), var(--laranja), var(--verde));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    input {
+      width: 100%; padding: 12px;
+      margin: 8px 0;
+      border-radius: 10px;
+      border: none;
+      outline: none;
+      font-size: 1rem;
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
+        background-color: #e6e6e6;
+      transition: 0.3s;
+    }
+
+    input:focus {
+      background: rgba(255,255,255,0.3);
+      box-shadow: 0 0 10px var(--laranja);
+    }
+
+    .btn-login {
+      margin-top: 1rem;
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      background: linear-gradient(45deg, var(--azul), var(--laranja));
+      color: white;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    .btn-login:hover {
+      transform: scale(1.05);
+      background: linear-gradient(45deg, var(--laranja), var(--azul));
+       box-shadow: 
+                0 0 30px rgba(9, 132, 25, 0.6),
+                0 0 60px rgba(4, 81, 184, 0.3);
+    }
+
+    .extras {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      color: var(--laranja);
+    }
+
+    .extras a {
+      color: var(--laranja);
+      text-decoration: none;
+    }
+
+    .extras a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <form class="login-container">
+    <h1>Login</h1>
+    <input type="email" placeholder="Digite seu e-mail" required>
+    <input type="password" placeholder="Digite sua senha" required>
+    <button type="submit" class="btn-login">Entrar</button>
+
+    <div class="extras">
+      <a href="#">Esqueci minha senha</a> | 
+      <a href="#">Criar conta</a>
+    </div>
+  </form>
+</body>
+</html>
